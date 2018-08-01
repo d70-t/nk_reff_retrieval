@@ -44,3 +44,14 @@ variables:
 	double transmission(frames, spatial, wavelength) ;
 		transmission:_FillValue = NaN ;
 ```
+
+# calculation of transmission
+
+In the sense of this retrieval, transmission is the fraction of received radiance an extra terrestrial irradiance, as defined by the libRadtran manual.
+It can be calculated by:
+
+```
+transmission = radiance / (excentricity_correction * solar_flux)
+```
+
+excentricity_correction and solar_flux can be calculated and resampled to the sensor FWHMs by functions from `solar_radiance.py`.
