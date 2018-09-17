@@ -1,0 +1,38 @@
+data_files_path /project/meteo/work/Tobias.Koelling/libradtran_git/data
+
+                         # Location of atmospheric profile file. 
+atmosphere_file /project/meteo/work/Tobias.Koelling/libradtran_git/data/atmmod/afglus.dat
+                         # Location of the extraterrestrial spectrum
+#source solar /project/meteo/work/Tobias.Koelling/libradtran_git/data/solar_flux/atlas_plus_modtran
+source solar /project/meteo/work/Tobias.Koelling/libradtran_git/data/solar_flux/kurudz_0.1nm.dat
+
+mol_abs_param reptran fine
+
+
+umu {% for umu in umus %} {{ umu }}{% endfor %} #sensor [cos, 1 == down]
+phi {% for phi in phis %} {{ phi }}{% endfor %} #sensor [deg 0 == sensor in north, looking south, 90 == sensor in east, looking west]
+sza {{ sza }} #sun [deg 0 == zenith] 
+phi0 0 #sun [deg, 0 == sun in south, 90 == sun in west]
+
+albedo 0.05               # Surface albedo
+rte_solver disort        # Radiative transfer equation solver
+
+{% if slitfile %}
+wavelength {{ center_wavelength-dwvl }} {{ center_wavelength+dwvl }}   # Wavelength range [nm]
+slit_function_file {{ slitfile }}
+spline {{ wavelength }} {{ wavelength }} 50
+{% else %}
+wavelength {{ center_wavelength }} {{ center_wavelength }}   # Wavelength range [nm]
+{% endif %}
+
+
+zout 10.0
+
+wc_file 1D {{ wcfile }} # Location of water cloud file
+wc_properties mie interpolate
+#wc_modify tau set 15.               # Set total water cloud optical depth
+
+output_user lambda uu
+output_quantity transmittance
+#verbose
+quiet

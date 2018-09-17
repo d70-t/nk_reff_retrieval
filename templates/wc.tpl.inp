@@ -1,0 +1,5 @@
+#      z     LWC    R_eff
+#     (km)  (g/m^3) (um)  
+{%- if not lwc: -%}{% set lwc = lwp / cloud_height %}{%- endif %}
+      {{ (cloud_base + cloud_height) / 1000.0 }}     0    {{ reff }}     # The water cloud is located between
+      {{ cloud_base / 1000.0 }}   {{ lwc }}    {{ reff }}     # 2 and 4.0 km. The parameters may 
